@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 
 import discord
@@ -14,16 +15,16 @@ class Coords(commands.Cog, name="Coords"):
         name="claim",
         description="Claim a coordinate"
     )
-    async def claim(self, ctx: Context, *, arg) -> None:
+    async def claim(self, ctx: Context, *, coordinate) -> None:
         coords = []
-        if "," in arg:
-            coords = arg.replace(" ", "").split(",")
-        elif ";" in arg:
-            coords = arg.replace(" ", "").split(";")
-        elif "x" in arg:
-            coords = arg.replace(" ", "").split("x")
-        elif " " in arg:
-            coords = arg.split(" ")
+        if "," in coordinate:
+            coords = [int(x) for x in coordinate.replace(" ", "").split(",")]
+        elif ";" in coordinate:
+            coords = [int(x) for x in coordinate.replace(" ", "").split(";")]
+        elif "x" in coordinate:
+            coords = [int(x) for x in coordinate.replace(" ", "").split("x")]
+        elif " " in coordinate:
+            coords = coordinate.split(" ")
 
         if len(coords) != 2:
             await ctx.reply(f"Please provide coordinates in the appropriate format: `x,y`, `x;y` , `x y`")
@@ -34,7 +35,11 @@ class Coords(commands.Cog, name="Coords"):
             return
 
         # Coords     Player       Timestamp             Expires
-        await ctx.reply(f"Claiming coords: {coords[0]}, {coords[1]} - {ctx.message.author} - {datetime.now()} - {datetime.now() + 24}")
+        # row_format ="{:>15}" * (len(teams_list) + 1)
+        # print(row_format.format("", *teams_list))
+        # for team, row in zip(teams_list, data):
+        #     print(row_format.format(team, *row))
+        await ctx.reply(f"Claiming coords: {coords[0]}, {coords[1]} - {ctx.message.author} - <t:{int(time.time())}:f> - <t:{int(time.time() + 24*60*60)}:f>")
 
     @commands.hybrid_command(
         name="delete",
