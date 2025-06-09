@@ -4,7 +4,7 @@ from discord.ext import commands
 from discord.ext.commands import Context
 
 
-class Owner(commands.Cog, name="owner"):
+class Owner(commands.Cog, name="Owner"):
     def __init__(self, bot) -> None:
         self.bot = bot
 
@@ -14,7 +14,7 @@ class Owner(commands.Cog, name="owner"):
     )
     @app_commands.describe(scope="The scope of the sync. Can be `global` or `guild`")
     @commands.is_owner()
-    async def sync(self, context: Context, scope: str) -> None:
+    async def sync(self, context: Context, scope: str = "global") -> None:
         """
         Synchonizes the slash commands.
 
@@ -141,14 +141,28 @@ class Owner(commands.Cog, name="owner"):
     )
     @app_commands.describe(cog="The name of the cog to reload")
     @commands.is_owner()
-    async def reload(self, context: Context, cog: str) -> None:
+    async def reload(self, context: Context, cog: str = "all") -> None:
         """
         The bot will reload the given cog.
 
         :param context: The hybrid command context.
         :param cog: The name of the cog to reload.
         """
+
+        if cog == "all":
+            embed = discord.Embed(
+                description="Reloading all cogs: ", color=0xBEBEFE
+            )
+            msg = await context.send(embed=embed)
+            for ext in list(self.bot.extensions):
+                await self.bot.reload_extension(ext)
+                embed.description = embed.description + \
+                    f"\nSuccessfully reloaded `{ext}`"
+                await msg.edit(embed=embed)
+            return
+
         try:
+            print(cog)
             await self.bot.reload_extension(f"cogs.{cog}")
         except Exception:
             embed = discord.Embed(
