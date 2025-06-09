@@ -88,6 +88,15 @@ class CoordsTracker(commands.Bot):
                         f"Failed to load extension {extension}\n{exception}"
                     )
 
+    async def startup(self) -> None:
+        await self.wait_until_ready()
+        self.logger.info(f"Bot is ready")
+        try:
+            synced = await bot.tree.sync()
+            self.logger.info(f"Command tree is synced, synced {len(synced)} commands")
+        except Exception as e:
+            print(e)
+
     async def setup_hook(self) -> None:
         """
         This will just be executed when the bot starts the first time.
@@ -100,6 +109,9 @@ class CoordsTracker(commands.Bot):
         )
         self.logger.info("-------------------")
         await self.load_cogs()
+        self.logger.info(f"All cogs loaded")
+
+        self.loop.create_task(self.startup())
 
     async def on_command_completion(self, context: Context) -> None:
         """
