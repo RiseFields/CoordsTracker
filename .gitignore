@@ -195,3 +195,5 @@ cython_debug/
 
 # Log file
 discord.log
+# DB file
+*.db
