@@ -6,7 +6,17 @@ class CoordinateParseException(Exception):
         self.split = split
 
     def __str__(self):
-        return f"Cannot parse {self.text} into a valid coordinate"
+        return f"ERROR: Cannot parse {self.text} into a valid coordinate."
+
+
+class CoordinateNotClaimedException(Exception):
+    def __init__(self, message, x: int, y: int):
+        super().__init__(message)
+        self.x = x,
+        self.y = y,
+
+    def __str__(self):
+        return f"ERROR: Coordinate {self.coord} is not claimed yet."
 
 
 class CoordinateClaimedException(Exception):
@@ -19,11 +29,11 @@ class CoordinateClaimedException(Exception):
         self.end = end
 
     def __str__(self):
-        return f"Coordinate {self.coord} claimed by user {self.user} until {self.end}"
+        return f"ERROR: Coordinate {self.coord} claimed by user {self.user} until {self.end}."
 
 
 class Coordinate():
-    def __init__(self, x, y, user, start, end):
+    def __init__(self, x: int, y: int, user: int, start: int, end: int):
         self.x = x
         self.y = y
         self.user = user
@@ -35,7 +45,7 @@ class Coordinate():
 
     def format(self):
 
-        row_format = "**`({:>3},{:>3})`** - `{:>15}`..\n..<t:{:>10}:f> - <t:{:>10}:f>"
+        row_format = "**`({:>3},{:>3})`** - <@{:>15}>..\n..<t:{:>10}:f> - <t:{:>10}:f>"
         print(row_format.format(*self.__dict__.values()))
         # for team, row in zip(, data):
         #     print(row_format.format(team, *row))
