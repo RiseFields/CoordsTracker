@@ -9,11 +9,6 @@ from discord.ext.commands import Context
 
 from data.manager import DataManager
 
-load_dotenv()
-
-intents = discord.Intents.default()
-intents.message_content = True
-
 
 class LoggingFormatter(logging.Formatter):
     # Colors
@@ -120,6 +115,11 @@ class CoordsTracker(commands.Bot):
 
 
 if __name__ == "__main__":
+
+    load_dotenv()
+
+    intents = discord.Intents.default()
+    intents.message_content = True
 
     logger = logging.getLogger("discord_bot")
     logger.setLevel(logging.INFO)
