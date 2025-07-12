@@ -2,6 +2,26 @@
 
 A simple discord.py bot used to track coordinates. Users can claim coordinates ranging from (0,0) up to (999,999). Claims expire after 24h but can be extend during this 24h period. 
 
+## Instalation
+
+Clone the repository and move in the directory:
+```bash
+git clone https://github.com/RiseFields/CoordsTracker
+cd CoordsTracker
+```
+
+Run the setup script
+```bash
+chmod +x setup.sh 
+./setup.sh
+```
+
+And finally run the bot!
+```bash
+source .venv/bin/activate
+python3 CoordsTraker.py
+```
+
 ## Features
 
 Quick overview of the features:
